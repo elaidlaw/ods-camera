@@ -1,0 +1,208 @@
+<?xml version="1.0">
+<sdf version="1.5">
+  <model name="ods_camera">
+      <link name="base">
+        <pose>0 0 0.005 0 0 0</pose>
+        <inertial>
+          <mass>1.5</mass>
+          <inertia>
+            <ixx>.0015</ixx>
+            <iyy>.0015</iyy>
+            <izz>.0015</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0315</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="base_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0315</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <link name="spinner">
+        <pose>0 0 .025 0 0 0</pose>
+        <inertial>
+          <mass>1.5</mass>
+          <inertia>
+            <ixx>.0015</ixx>
+            <iyy>.0015</iyy>
+            <izz>.0015</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0315</radius>
+              <length>0.03</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="base_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0315</radius>
+              <length>0.03</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <sensor type="wideanglecamera" name="camera1">
+          <pose>0 -0.031 .015 1.57 0 0</pose>
+          <camera>
+            <horizontal_fov>3.1415</horizontal_fov>
+            <image>
+              <width>1000</width>
+              <height>1000</height>
+            </image>
+            <clip>
+              <near>0.0001</near>
+              <far>100</far>
+            </clip>
+            <!-- A new section named `lens`. -->
+            <lens>
+              <!-- type element is mandatory -->
+              <type>custom</type>
+              <!-- manually defined mapping function r = c1*f*fun(theta/c2 + c3) -->
+              <!-- More information here: https://en.wikipedia.org/wiki/Fisheye_lens#Mapping_function -->
+              <custom_function>
+                <c1>1.05</c1>
+                <!-- linear scaling -->
+                <c2>4</c2>
+                <!-- angle scaling -->
+                <f>1.0</f>
+                <!-- one more scaling parameter -->
+                <fun>tan</fun>
+                <!-- one of sin,tan,id -->
+              </custom_function>
+              <!-- if it is set to `true` your horizontal FOV will ramain as defined -->
+              <!-- othervise it depends on lens type and custom function, if there is one -->
+              <scale_to_hfov>true</scale_to_hfov>
+              <!-- clip everything that is outside of this angle -->
+              <cutoff_angle>3.1415</cutoff_angle>
+              <!-- resolution of the cubemap texture, the highter it is - the sharper is your image -->
+              <env_texture_size>512</env_texture_size>
+            </lens>
+          </camera>
+          <plugin name="camera1_controller" filename="libgazebo_ros_camera.so">
+            <always_on>1</always_on>
+            <update_rate>60</update_rate>
+            <cameraName>ods_camera/camera1</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>spinner</frameName>
+            <hackBaseline>0.07</hackBaseline>
+          </plugin>
+        </sensor>
+        <sensor type="wideanglecamera" name="camera2">
+          <pose>0 0.031 .015 1.57 0 0</pose>
+          <camera>
+            <horizontal_fov>3.1415</horizontal_fov>
+            <image>
+              <width>1000</width>
+              <height>1000</height>
+            </image>
+            <clip>
+              <near>0.0001</near>
+              <far>100</far>
+            </clip>
+            <!-- A new section named `lens`. -->
+            <lens>
+              <!-- type element is mandatory -->
+              <type>custom</type>
+              <!-- manually defined mapping function r = c1*f*fun(theta/c2 + c3) -->
+              <!-- More information here: https://en.wikipedia.org/wiki/Fisheye_lens#Mapping_function -->
+              <custom_function>
+                <c1>1.05</c1>
+                <!-- linear scaling -->
+                <c2>4</c2>
+                <!-- angle scaling -->
+                <f>1.0</f>
+                <!-- one more scaling parameter -->
+                <fun>tan</fun>
+                <!-- one of sin,tan,id -->
+              </custom_function>
+              <!-- if it is set to `true` your horizontal FOV will ramain as defined -->
+              <!-- othervise it depends on lens type and custom function, if there is one -->
+              <scale_to_hfov>true</scale_to_hfov>
+              <!-- clip everything that is outside of this angle -->
+              <cutoff_angle>3.1415</cutoff_angle>
+              <!-- resolution of the cubemap texture, the highter it is - the sharper is your image -->
+              <env_texture_size>512</env_texture_size>
+            </lens>
+          </camera>
+          <plugin name="camera2_controller" filename="libgazebo_ros_camera.so">
+            <always_on>1</always_on>
+            <update_rate>60</update_rate>
+            <cameraName>ods_camera/camera2</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>spinner</frameName>
+            <hackBaseline>0.07</hackBaseline>
+          </plugin>
+        </sensor>
+        <!-- <sensor type="camera" name="camera2">
+          <pose>0 0.031 .015 1.57 0 0</pose>
+          <visualize>true</visualize>
+          <update_rate>60</update_rate>
+          <camera name="head2">
+            <horizontal_fov>3.1</horizontal_fov>
+            <image>
+              <width>1000</width>
+              <height>1000</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <lens>
+              <type>custom</type>
+              <custom_function>
+                <c1>1.05</c1>
+                <c2>4</c2>
+                <f>1.0</f>
+                <fun>tan</fun>
+              </custom_function>
+              <cutoff_angle>3.14</cutoff_angle>
+              <scale_to_hfov>true</scale_to_hfov>
+            </lens>
+          </camera>
+          <plugin name="camera2_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0</updateRate>
+            <cameraName>ods_camera/camera2</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>spinner</frameName>
+          </plugin>
+        </sensor> -->
+      </link>
+      <joint type="revolute" name="joint">
+        <pose>0 0 -0.015 0 0 0</pose>
+        <parent>base</parent>
+        <child>spinner</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <plugin name="ods_camera" filename="libods_camera.so"/>
+    </model>
+</sdf>

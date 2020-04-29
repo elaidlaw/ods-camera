@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find ods_camera)/worlds/ods_camera.world"/>
+  </include>
+  <node name="ods_camera_node" pkg="ods_camera" type="ods_camera.py" />
+</launch>
